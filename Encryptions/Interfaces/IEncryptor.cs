@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Encryptions.Interfaces
 {
-    interface IEncryptor<T>
+    interface IEncryptor<T> where T : IKeyHolder
     {
         string EncryptFile(string completeFilePath, T key);
         string DecryptFile(string completeFilePath, T key);
