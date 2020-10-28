@@ -1,0 +1,10 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Encryptions.Encryptors
+{
+    class ZigZagEncryptor
+    {
+    }
+}
