@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Encryptions.Interfaces
 {
-    interface IKeyHolder
+    public interface IKeyHolder
     {
-        string CesarKey { get; set; } 
-        int ZigZagKey { get; set; }
-        List<int> RouteKey { get; set; }
+        string GetCesarKey();
+        int GetZigZagKey();
+        List<int> GetRouteKey();
     }
 }
