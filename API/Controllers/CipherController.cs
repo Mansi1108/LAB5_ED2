@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace API.Controllers
         }
 
         // GET: api/<CipherController>
+        [Route("/cipher")]
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -37,8 +39,8 @@ namespace API.Controllers
             try
             {
                 var uploadedFilePath = await FileManager.SaveFileAsync(file, Environment.ContentRootPath);
-                var returningFile = FileManager.Cipher(uploadedFilePath, method, key);
-                return PhysicalFile(returningFile.Path, MediaTypeNames.Text.Plain);
+                var returningFile = FileManager.Cipher(Environment.ContentRootPath,uploadedFilePath, method, key);
+                return PhysicalFile(returningFile.Path, MediaTypeNames.Text.Plain, $"{Path.GetFileNameWithoutExtension(uploadedFilePath)}{returningFile.FileType}");
             }
             catch 
             {
@@ -53,14 +55,15 @@ namespace API.Controllers
             }
         }
 
-        [Route("api/decipher/{key}")]
+        [Route("/api/decipher/{key}")]
         [HttpPost]
         public async Task<IActionResult> Decipher([FromForm] IFormFile file, string key)
         {
             try
             {
                 var uploadedFilePath = await FileManager.SaveFileAsync(file, Environment.ContentRootPath);
-                var returningFile = FileManager.
+                var returningFile = FileManager.Decipher(Environment.ContentRootPath, uploadedFilePath, key);
+                return PhysicalFile(returningFile, MediaTypeNames.Text.Plain);
             }
             catch 
             {

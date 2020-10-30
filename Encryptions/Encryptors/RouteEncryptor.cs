@@ -33,7 +33,7 @@ namespace Encryptions.Encryptors
         {
             X = height;
             Y = large;
-            MatrixList = new List<byte[,]>();
+            var MatrixList = new List<byte[,]>();
 
         }
         #endregion
@@ -141,7 +141,7 @@ namespace Encryptions.Encryptors
         }
         #endregion
 
-        public string DecryptFile(string completeFilePath, T key)
+        public string DecryptFile(string savingPath, string completeFilePath, T key)
         {
             throw new NotImplementedException();
         }
@@ -151,7 +151,7 @@ namespace Encryptions.Encryptors
             throw new NotImplementedException();
         }
 
-        public string EncryptFile(string completeFilePath, T key)
+        public string EncryptFile(string savingPath, string completeFilePath, T key)
         {
             throw new NotImplementedException();
         }

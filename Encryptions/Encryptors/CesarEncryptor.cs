@@ -1,30 +1,200 @@
 ﻿using Encryptions.Interfaces;
+using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Encryptions.Encryptors
 {
     public class CesarEncryptor<T> : IEncryptor<T> where T : IKeyHolder
     {
-        public string DecryptFile(string completeFilePath, T key)
+        #region Variables
+        Dictionary<byte, byte> CesarDictionary = new Dictionary<byte, byte>();
+        #endregion
+
+        #region DictionaryLoad
+        private void LoadDictionary(T key, bool encryption)
         {
-            throw new NotImplementedException();
+            var keyValue = key.GetCesarKey();
+            var upperCharacters = Enumerable.Range('A', 'Z' - 'A' + 1).Select(x => (byte)x).ToList();
+            var lowerCharacters = Enumerable.Range('a', 'z' - 'a' + 1).Select(x => (byte)x).ToList();
+            if (encryption)
+            {
+                FillDictionary(keyValue.ToUpper(), true, upperCharacters);
+                FillDictionary(keyValue.ToLower(), true, lowerCharacters);
+            }
+            else
+            {
+                FillDictionary(keyValue.ToUpper(), false, upperCharacters);
+                FillDictionary(keyValue.ToLower(), false, lowerCharacters);
+            }
+        }
+
+        private void FillDictionary(string key, bool encryption, List<byte> letterList)
+        {
+            var characterList = letterList;
+            var keyList = new List<byte>();
+            foreach (var character in key)
+            {
+                if (!keyList.Contains((byte)character))
+                {
+                    keyList.Add((byte)character);
+                }
+            }
+            var secondaryList = new List<byte>();
+            if (encryption)
+            {
+                for (int i = 0; i < keyList.Count; i++)
+                {
+                    CesarDictionary.Add(characterList[i], keyList[i]);
+                }
+                foreach (var character in characterList)
+                {
+                    if (!CesarDictionary.ContainsValue(character))
+                    {
+                        secondaryList.Add(character);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < keyList.Count; i++)
+                {
+                    CesarDictionary.Add(keyList[i], characterList[i]);
+                }
+                foreach (var character in characterList)
+                {
+                    if (!CesarDictionary.ContainsKey(character))
+                    {
+                        secondaryList.Add(character);
+                    }
+                }
+            }
+            characterList.RemoveRange(0, keyList.Count);
+            if (encryption)
+            {
+                for (int i = 0; i < secondaryList.Count; i++)
+                {
+                    CesarDictionary.Add(characterList[i], secondaryList[i]);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < secondaryList.Count; i++)
+                {
+                    CesarDictionary.Add(secondaryList[i], characterList[i]);
+                }
+            }
+        }
+        #endregion
+
+        #region Encryption
+        public string EncryptFile(string savingPath, string completeFilePath, T key)
+        {
+            CesarDictionary.Clear();
+            using var fileForReading = new FileStream(completeFilePath, FileMode.Open);
+            using var reader = new BinaryReader(fileForReading);
+            var buffer = new byte[2000];
+            LoadDictionary(key, true);
+            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}";
+            using var fileForWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
+            using var writer = new BinaryWriter(fileForWriting);
+            while (fileForReading.Position != fileForReading.Length)
+            {
+                buffer = reader.ReadBytes(buffer.Length);
+                foreach (var character in buffer)
+                {
+                    if (CesarDictionary.ContainsKey(character))
+                    {
+                        writer.Write(CesarDictionary[character]);
+                    }
+                    else
+                    {
+                        writer.Write(character);
+                    }
+                }
+            }
+            reader.Close();
+            fileForReading.Close();
+            writer.Close();
+            fileForWriting.Close();
+            return fileRoute;
+        }
+
+        public string EncryptString(string text, T key)
+        {
+            CesarDictionary.Clear();
+            var encryptedString = string.Empty;
+            LoadDictionary(key, true);
+            foreach (var character in text)
+            {
+                if (CesarDictionary.ContainsKey((byte)character))
+                {
+                    encryptedString += CesarDictionary[(byte)character];
+                }
+                else
+                {
+                    encryptedString += character;
+                }
+            }
+            return encryptedString;
+        }
+        #endregion
+
+        #region Decryption
+        public string DecryptFile(string savingPath, string completeFilePath, T key)
+        {
+            CesarDictionary.Clear();
+            using var fileForReading = new FileStream(completeFilePath, FileMode.Open);
+            using var reader = new BinaryReader(fileForReading);
+            var buffer = new byte[2000];
+            LoadDictionary(key, false);
+            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}";
+            using var fileforWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
+            using var writer = new BinaryWriter(fileforWriting);
+            while (fileForReading.Position != fileForReading.Length)
+            {
+                buffer = reader.ReadBytes(buffer.Length);
+                foreach (var character in buffer)
+                {
+                    if (CesarDictionary.ContainsKey(character))
+                    {
+                        writer.Write(CesarDictionary[character]);
+                    }
+                    else
+                    {
+                        writer.Write(character);
+                    }
+                }
+            }
+            reader.Close();
+            fileForReading.Close();
+            writer.Close();
+            fileforWriting.Close();
+            return fileRoute;
         }
 
         public string DecryptString(string text, T Key)
         {
-            throw new NotImplementedException();
+            CesarDictionary.Clear();
+            var decryptedString = string.Empty;
+            foreach (var character in text)
+            {
+                if (CesarDictionary.ContainsKey((byte)character))
+                {
+                    decryptedString += CesarDictionary[(byte)character];
+                }
+                else
+                {
+                    decryptedString += character;
+                }
+            }
+            return decryptedString;
         }
-
-        public string EncryptFile(string completeFilePath, T key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string EncryptString(string text, T Key)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

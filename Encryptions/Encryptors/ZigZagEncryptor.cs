@@ -7,7 +7,7 @@ namespace Encryptions.Encryptors
 {
     public class ZigZagEncryptor<T> : IEncryptor<T> where T : IKeyHolder
     {
-        public string DecryptFile(string completeFilePath, T key)
+        public string DecryptFile(string savingPath, string completeFilePath, T key)
         {
             throw new NotImplementedException();
         }
@@ -17,7 +17,7 @@ namespace Encryptions.Encryptors
             throw new NotImplementedException();
         }
 
-        public string EncryptFile(string completeFilePath, T key)
+        public string EncryptFile(string savingPath, string completeFilePath, T key)
         {
             throw new NotImplementedException();
         }
