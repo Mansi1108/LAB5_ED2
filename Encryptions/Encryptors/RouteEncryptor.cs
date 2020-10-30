@@ -44,7 +44,7 @@ namespace Encryptions.Encryptors
 
         #region String
 
-        public void SFillVertical(string Message)
+        public void SVerticalFiller(string Message)
         {
             char[,] ActualMatrix = new char[X, Y];
             while (Message.Length > 0)
@@ -70,62 +70,70 @@ namespace Encryptions.Encryptors
            
         }
         //No terminado
-        public void SFillSpiral(string Message)
+        public void SSpiralFiller(string Message)
         {
 
             char[,] ActualMatrix = new char[X, Y];
             while (Message.Length > 0)
             {
+                int MaxCapacity = X * Y;
+                int x = 0;
+                int y = 0;
                 ActualMatrix = new char[X, Y];
-                int i = 0;
-                int j = 0;
-                for (i = 0; i < X; i++)
+                while (MaxCapacity>0)
                 {
-                    if (Message.Length > 0)
+                    int i = x;
+                    int j = y;
+                    for (i = x; i < X - x; i++)
                     {
-                        ActualMatrix[i, j] = Message[0];
-                        Message.Remove(0, 1);
+                        if (Message.Length > 0)
+                        {
+                            ActualMatrix[i, j] = Message[0];
+                            Message.Remove(0, 1);
+                        }
+                        else
+                        {
+                            ActualMatrix[i, j] = Fillingchar;
+                        }
                     }
-                    else
+                    for (j = y + 1; j < Y - y; j++)
                     {
-                        ActualMatrix[i, j] = Fillingchar;
+                        if (Message.Length > 0)
+                        {
+                            ActualMatrix[i, j] = Message[0];
+                            Message.Remove(0, 1);
+                        }
+                        else
+                        {
+                            ActualMatrix[i, j] = Fillingchar;
+                        }
                     }
-                }
-                for (j = 0; j < Y; j++)
-                {
-                    if (Message.Length > 0)
+                    for (i = X - 2 - x; i >= x; i--)
                     {
-                        ActualMatrix[i, j] = Message[0];
-                        Message.Remove(0, 1);
+                        if (Message.Length > 0)
+                        {
+                            ActualMatrix[i, j] = Message[0];
+                            Message.Remove(0, 1);
+                        }
+                        else
+                        {
+                            ActualMatrix[i, j] = Fillingchar;
+                        }
                     }
-                    else
+                    for (j = Y - 2 - y; j > y; j--)
                     {
-                        ActualMatrix[i, j] = Fillingchar;
+                        if (Message.Length > 0)
+                        {
+                            ActualMatrix[i, j] = Message[0];
+                            Message.Remove(0, 1);
+                        }
+                        else
+                        {
+                            ActualMatrix[i, j] = Fillingchar;
+                        }
                     }
-                }
-                for (i = X-2; i >= 0; i--)
-                {
-                    if (Message.Length > 0)
-                    {
-                        ActualMatrix[i, j] = Message[0];
-                        Message.Remove(0, 1);
-                    }
-                    else
-                    {
-                        ActualMatrix[i, j] = Fillingchar;
-                    }
-                }
-                for (j = Y-2; j > 0; j++)
-                {
-                    if (Message.Length > 0)
-                    {
-                        ActualMatrix[i, j] = Message[0];
-                        Message.Remove(0, 1);
-                    }
-                    else
-                    {
-                        ActualMatrix[i, j] = Fillingchar;
-                    }
+                    y++;
+                    x++;
                 }
                 SMatrixList.Add(ActualMatrix);
             }
