@@ -37,6 +37,10 @@ namespace API.Controllers
             try
             {
                 var uploadedFilePath = await FileManager.SaveFileAsync(file, Environment.ContentRootPath);
+                if (!KeyHolder.CheckKeyValidness(method, key))
+                {
+                    return StatusCode(500, "La llave ingresada es incorrecta");
+                }
                 var returningFile = FileManager.Cipher(uploadedFilePath, method, key);
                 return PhysicalFile(returningFile.Path, MediaTypeNames.Text.Plain);
             }
@@ -60,6 +64,10 @@ namespace API.Controllers
             try
             {
                 var uploadedFilePath = await FileManager.SaveFileAsync(file, Environment.ContentRootPath);
+                if (!KeyHolder.CheckKeyValidness(method, key))
+                {
+                    return StatusCode(500, "La llave ingresada es incorrecta");
+                }
                 var returningFile = FileManager.Decipher(uploadedFilePath, key);
                 return PhysicalFile(returningFile, MediaTypeNames.Text.Plain);
             }

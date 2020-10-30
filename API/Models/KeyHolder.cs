@@ -19,5 +19,26 @@ namespace API.Models
         public string GetCesarKey() { return CesarKey; }
         public List<int> GetRouteKey()  { return RouteKey; }
         public int GetZigZagKey() { return ZigZagKey; }
+
+        public static bool CheckKeyValidness(string method, string key)
+        {
+            switch (method)
+            {
+                case "cesar":
+                    foreach (var item in key)
+                    {
+                        if ((byte)item < 65 || (byte)item > 90 && (byte)item < 97 || (byte)item > 122)
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case "zigzag":
+                    break;
+                case "ruta":
+                    break;
+            }
+            return true;
+        }
     }
 }
