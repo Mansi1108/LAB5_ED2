@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,29 +22,38 @@ namespace API.Models
         public static FileProperties Cipher(string filePath, string method, string key)
         {
             var encryptedFileProperties = new FileProperties();
-            switch (method)
+            switch (method.ToLower())
             {
-                case "Cesar":
+                case "cesar":
                     var cesarEncryptor = new CesarEncryptor<KeyHolder>();
                     var cesarKeyHolder = new KeyHolder();
                     cesarKeyHolder.SetCesarKey(key);
                     encryptedFileProperties.Path = cesarEncryptor.EncryptFile(filePath, cesarKeyHolder);
                     encryptedFileProperties.FileType = ".csr";
                     break;
-                case "ZigZag":
+                case "zigzag":
                     var zigzagEncryptor = new ZigZagEncryptor<KeyHolder>();
                     var zigzagKeyHolder = new KeyHolder();
                     zigzagKeyHolder.SetZigZagKey(Convert.ToInt32(key));
                     encryptedFileProperties.Path = zigzagEncryptor.EncryptFile(filePath, zigzagKeyHolder);
                     encryptedFileProperties.FileType = ".zz";
                     break;
-                case "Ruta":
+                case "ruta":
                     var routeEncryptor = new CesarEncryptor<KeyHolder>();
                     var routeKeyHolder = new KeyHolder();
                     var list = new List<int>();
-                    foreach (var character in key)
+                    key = key.ToLower();
+                    var values = key.Split('-');
+                    var dimensions = values[0].Split('x');
+                    list.Add(Convert.ToInt32(dimensions[0]));
+                    list.Add(Convert.ToInt32(dimensions[1]));
+                    if (values[1] == "v")
                     {
-                        list.Add(Convert.ToInt32(key));
+                        list.Add(0);
+                    }
+                    else
+                    {
+                        list.Add(1);
                     }
                     routeKeyHolder.SetRouteKey(list);
                     encryptedFileProperties.Path = routeEncryptor.EncryptFile(filePath, routeKeyHolder);
@@ -51,6 +61,42 @@ namespace API.Models
                     break;
             }
             return encryptedFileProperties;
+        }
+
+        public static string Decipher(string filePath, string key)
+        {
+            var filetype = Path.GetExtension(filePath);
+            switch (filetype)
+            {
+                case ".csr":
+                    var cesarDecryptor = new CesarEncryptor<KeyHolder>();
+                    var cesarKeyHolder = new KeyHolder();
+                    cesarKeyHolder.SetCesarKey(key);
+                    return cesarDecryptor.DecryptFile(filePath, cesarKeyHolder);
+                case ".zz":
+                    var zigzagDecryptor = new ZigZagEncryptor<KeyHolder>();
+                    var zigzagKeyHolder = new KeyHolder();
+                    zigzagKeyHolder.SetZigZagKey(Convert.ToInt32(key));
+                    return zigzagDecryptor.DecryptFile(filePath, zigzagKeyHolder);
+                case ".rt":
+                    var routeDecryptor = new RouteEncryptor<KeyHolder>();
+                    var routeKeyHolder = new KeyHolder();
+                    var list = new List<int>();
+                    var values = key.Split('-');
+                    var dimensions = values[0].Split('x');
+                    list.Add(Convert.ToInt32(dimensions[0]));
+                    list.Add(Convert.ToInt32(dimensions[1]));
+                    if (values[1] == "v")
+                    {
+                        list.Add(0);
+                    }
+                    else
+                    {
+                        list.Add(1);
+                    }
+                    routeKeyHolder.SetRouteKey(list);
+                    return routeDecryptor.DecryptFile(filePath, routeKeyHolder);
+            }
         }
     }
 }
