@@ -60,7 +60,8 @@ namespace API.Controllers
             try
             {
                 var uploadedFilePath = await FileManager.SaveFileAsync(file, Environment.ContentRootPath);
-                var returningFile = FileManager.
+                var returningFile = FileManager.Decipher(uploadedFilePath, key);
+                return PhysicalFile(returningFile, MediaTypeNames.Text.Plain);
             }
             catch 
             {
