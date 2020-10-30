@@ -1,8 +1,10 @@
 ﻿using Encryptions.Interfaces;
+using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -28,7 +30,7 @@ namespace Encryptions.Encryptors
             else
             {
                 FillDictionary(keyValue.ToUpper(), false, upperCharacters);
-                FillDictionary(keyValue.ToLower(), false, upperCharacters);
+                FillDictionary(keyValue.ToLower(), false, lowerCharacters);
             }
         }
 
@@ -93,11 +95,12 @@ namespace Encryptions.Encryptors
         #region Encryption
         public string EncryptFile(string savingPath, string completeFilePath, T key)
         {
+            CesarDictionary.Clear();
             using var fileForReading = new FileStream(completeFilePath, FileMode.Open);
             using var reader = new BinaryReader(fileForReading);
             var buffer = new byte[2000];
             LoadDictionary(key, true);
-            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}.csr";
+            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}";
             using var fileForWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
             using var writer = new BinaryWriter(fileForWriting);
             while (fileForReading.Position != fileForReading.Length)
@@ -122,20 +125,35 @@ namespace Encryptions.Encryptors
             return fileRoute;
         }
 
-        public string EncryptString(string text, T Key)
+        public string EncryptString(string text, T key)
         {
-            throw new NotImplementedException();
+            CesarDictionary.Clear();
+            var encryptedString = string.Empty;
+            LoadDictionary(key, true);
+            foreach (var character in text)
+            {
+                if (CesarDictionary.ContainsKey((byte)character))
+                {
+                    encryptedString += CesarDictionary[(byte)character];
+                }
+                else
+                {
+                    encryptedString += character;
+                }
+            }
+            return encryptedString;
         }
         #endregion
 
         #region Decryption
         public string DecryptFile(string savingPath, string completeFilePath, T key)
         {
+            CesarDictionary.Clear();
             using var fileForReading = new FileStream(completeFilePath, FileMode.Open);
             using var reader = new BinaryReader(fileForReading);
             var buffer = new byte[2000];
             LoadDictionary(key, false);
-            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}.txt";
+            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}";
             using var fileforWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
             using var writer = new BinaryWriter(fileforWriting);
             while (fileForReading.Position != fileForReading.Length)
@@ -162,7 +180,20 @@ namespace Encryptions.Encryptors
 
         public string DecryptString(string text, T Key)
         {
-            throw new NotImplementedException();
+            CesarDictionary.Clear();
+            var decryptedString = string.Empty;
+            foreach (var character in text)
+            {
+                if (CesarDictionary.ContainsKey((byte)character))
+                {
+                    decryptedString += CesarDictionary[(byte)character];
+                }
+                else
+                {
+                    decryptedString += character;
+                }
+            }
+            return decryptedString;
         }
         #endregion
     }
