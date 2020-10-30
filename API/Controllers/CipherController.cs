@@ -64,7 +64,7 @@ namespace API.Controllers
             try
             {
                 var uploadedFilePath = await FileManager.SaveFileAsync(file, Environment.ContentRootPath);
-                if (!KeyHolder.CheckKeyValidness(method, key))
+                if (!KeyHolder.CheckKeyFromFileType(uploadedFilePath, key))
                 {
                     return StatusCode(500, "La llave ingresada es incorrecta");
                 }
