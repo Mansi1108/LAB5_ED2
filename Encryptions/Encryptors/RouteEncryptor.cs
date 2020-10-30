@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Encryptions.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
 namespace Encryptions.Encryptors
 {
-    class RouteEncryptor
+    public class RouteEncryptor<T> : IEncryptor<T> where T : IKeyHolder
     {
         #region Variables
         public int X = 0;
@@ -131,5 +132,25 @@ namespace Encryptions.Encryptors
             }
         }
         #endregion
+
+        public string DecryptFile(string completeFilePath, T key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string DecryptString(string text, T Key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string EncryptFile(string completeFilePath, T key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string EncryptString(string text, T Key)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
