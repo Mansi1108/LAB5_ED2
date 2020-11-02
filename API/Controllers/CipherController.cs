@@ -67,7 +67,7 @@ namespace API.Controllers
             }
             catch 
             {
-                return StatusCode(500, "La forma correcta de enviar una llave para el cifrado de ruta es MxN-V o MxN-E");
+                return StatusCode(500, "La forma correcta de enviar una llave para el descifrado de ruta es MxN-V o MxN-E");
             }
         }
     }
