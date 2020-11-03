@@ -87,18 +87,9 @@ namespace API.Models
                     var routeDecryptor = new RouteEncryptor<KeyHolder>();
                     var routeKeyHolder = new KeyHolder();
                     var list = new List<int>();
-                    var values = key.Split('-');
-                    var dimensions = values[0].Split('x');
+                    var dimensions = key.Split('x');
                     list.Add(Convert.ToInt32(dimensions[0]));
                     list.Add(Convert.ToInt32(dimensions[1]));
-                    if (values[1] == "v")
-                    {
-                        list.Add(0);
-                    }
-                    else
-                    {
-                        list.Add(1);
-                    }
                     routeKeyHolder.SetRouteKey(list);
                     return routeDecryptor.DecryptFile(savingPath, filePath, routeKeyHolder);
             }
