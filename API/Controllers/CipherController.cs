@@ -43,7 +43,7 @@ namespace API.Controllers
                 {
                     return StatusCode(500, "La llave ingresada es incorrecta");
                 }
-                var returningFile = FileManager.Cipher(uploadedFilePath, method, key);
+                var returningFile = FileManager.Cipher(Environment.ContentRootPath, uploadedFilePath, method, key);
                 return PhysicalFile(returningFile.Path, MediaTypeNames.Text.Plain, $"{Path.GetFileNameWithoutExtension(uploadedFilePath)}{returningFile.FileType}");
             }
             catch 
