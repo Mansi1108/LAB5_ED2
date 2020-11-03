@@ -15,9 +15,10 @@ namespace StringEncryption
                 string text = Console.ReadLine();
                 Console.WriteLine("Escribe la llave del cifrado");
                 string key = Console.ReadLine();
-                
+                KeyHolder K = new KeyHolder();
+                K.SetZigZagKey(Convert.ToInt32(key));
                 Console.WriteLine("Se ha guardado el string con éxito para cifrar");
-                string CompressedText = ZZE.EncryptString(text, key);
+                string CompressedText = ZZE.EncryptString(text, K);
                 Console.WriteLine("El resultado de la compresión es el siguiente:");
                 Console.WriteLine(CompressedText);
                 Console.WriteLine("¿Desea descifrarlo? | Presione 'Y'. De lo contrario, presione cualquier otra tecla.");
@@ -25,7 +26,7 @@ namespace StringEncryption
                 {
                     Console.Clear();
                     Console.WriteLine("El resultado de la descifrado es el siguiente:");
-                    Console.WriteLine(ZZE.DecryptString(CompressedText, key));
+                    Console.WriteLine(ZZE.DecryptString(CompressedText,K));
                     Console.ReadLine();
                 }
                 Console.WriteLine("Feliz día!");
