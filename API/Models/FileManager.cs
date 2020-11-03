@@ -48,22 +48,13 @@ namespace API.Models
                     encryptedFileProperties.FileType = ".zz";
                     break;
                 case "ruta":
-                    var routeEncryptor = new CesarEncryptor<KeyHolder>();
+                    var routeEncryptor = new RouteEncryptor<KeyHolder>();
                     var routeKeyHolder = new KeyHolder();
                     var list = new List<int>();
                     key = key.ToLower();
-                    var values = key.Split('-');
-                    var dimensions = values[0].Split('x');
+                    var dimensions = key.Split('x');
                     list.Add(Convert.ToInt32(dimensions[0]));
                     list.Add(Convert.ToInt32(dimensions[1]));
-                    if (values[1] == "v")
-                    {
-                        list.Add(0);
-                    }
-                    else
-                    {
-                        list.Add(1);
-                    }
                     routeKeyHolder.SetRouteKey(list);
                     encryptedFileProperties.Path = routeEncryptor.EncryptFile(savingPath, filePath, routeKeyHolder);
                     encryptedFileProperties.FileType = ".rt";
