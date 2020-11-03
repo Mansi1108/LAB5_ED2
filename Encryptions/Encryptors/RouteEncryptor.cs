@@ -99,7 +99,7 @@ namespace Encryptions.Encryptors
             using var fileForReading = new FileStream(completeFilePath, FileMode.Open);
             using var reader = new BinaryReader(fileForReading);
             var buffer = new byte[2000];
-            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}";
+            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath) + ".rt"}";
             using var fileForWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
             using var writer = new BinaryWriter(fileForWriting);
             byte[,] ActualMatrix = new byte[X, Y];
@@ -247,7 +247,7 @@ namespace Encryptions.Encryptors
             using var fileForReading = new FileStream(completeFilePath, FileMode.Open);
             using var reader = new BinaryReader(fileForReading);
             var buffer = new byte[2000];
-            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}";
+            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath) + ".txt"}";
             using var fileforWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
             using var writer = new BinaryWriter(fileforWriting);
             byte[,] ActualMatrix = new byte[X, Y];
@@ -281,7 +281,7 @@ namespace Encryptions.Encryptors
 
                     for (i = x; i < X - x; i++)
                     {
-                        if (item[i, j] != Fillingchar)
+                        if (item[i, j] != Convert.ToByte(Fillingchar))
                         {
                             writer.Write(item[i, j]);
                         }
@@ -290,7 +290,7 @@ namespace Encryptions.Encryptors
                     i--;
                     for (j = y + 1; j < Y - y; j++)
                     {
-                        if (item[i, j] != Fillingchar)
+                        if (item[i, j] != Convert.ToByte(Fillingchar))
                         {
                             writer.Write(item[i, j]);
                         }
@@ -299,7 +299,7 @@ namespace Encryptions.Encryptors
                     j--;
                     for (i = X - 2 - x; i > x; i--)
                     {
-                        if (item[i, j] != Fillingchar)
+                        if (item[i, j] != Convert.ToByte(Fillingchar))
                         {
                             writer.Write(item[i, j]);
                         }
@@ -307,7 +307,7 @@ namespace Encryptions.Encryptors
                     }
                     for (j = Y - 1 - y; j > y; j--)
                     {
-                        if (item[i, j] != Fillingchar)
+                        if (item[i, j] != Convert.ToByte(Fillingchar))
                         {
                             writer.Write(item[i, j]);
                         }
