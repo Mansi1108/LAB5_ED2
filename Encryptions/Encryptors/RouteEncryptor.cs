@@ -559,6 +559,8 @@ namespace Encryptions.Encryptors
             var K = key.GetRouteKey();
             SetVariables(K[1], K[0]);
             return FDecryptSpiral(savingPath, completeFilePath);
+            throw new NotImplementedException();
+
         }
         public string DecryptString(string text, T Key)
         {
@@ -572,6 +574,8 @@ namespace Encryptions.Encryptors
             var K = key.GetRouteKey();
             SetVariables(K[1], K[0]);
             return FSpiralEncrypt(savingPath, completeFilePath);
+            throw new NotImplementedException();
+
         }
 
         public string EncryptString(string text, T Key)

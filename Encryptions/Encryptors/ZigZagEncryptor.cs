@@ -20,8 +20,6 @@ namespace Encryptions.Encryptors
         }
 
         #endregion
-
-
         #region Encryption
 
         public string EncryptString(string text, T Key)

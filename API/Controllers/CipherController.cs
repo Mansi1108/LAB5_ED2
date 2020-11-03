@@ -32,9 +32,9 @@ namespace API.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        [Route("/api/cipher/{method}/{key}")]
+        [Route("/api/cipher/{method}")]
         [HttpPost]
-        public async Task<IActionResult> Cipher([FromForm] IFormFile file, string method, string key)
+        public async Task<IActionResult> Cipher([FromForm]IFormFile file, string method, [FromForm]KeyHolder key)
         {
             try
             {
@@ -48,24 +48,13 @@ namespace API.Controllers
             }
             catch 
             {
-                if (method.ToLower() == "ruta")
-                {
-                    return StatusCode(500, "La clave no se ha ingresado correctamente");
-                }
-                else if (method.ToLower() == "zizag")
-                {
-                    return StatusCode(500, "La forma correcta de enviar una llave para el cifrado de zizag es un número entero positivo.");
-                }           
-                else
-                {
-                    return StatusCode(500);
-                }
+                return StatusCode(500);
             }
         }
 
-        [Route("/api/decipher/{key}")]
+        [Route("/api/decipher")]
         [HttpPost]
-        public async Task<IActionResult> Decipher([FromForm] IFormFile file, string key)
+        public async Task<IActionResult> Decipher([FromForm]IFormFile file,[FromForm]KeyHolder key)
         {
             try
             {
@@ -79,7 +68,7 @@ namespace API.Controllers
             }
             catch 
             {
-                return StatusCode(500, "La clave no se ha ingresado correctamente");
+                return StatusCode(500);
             }
         }
     }
