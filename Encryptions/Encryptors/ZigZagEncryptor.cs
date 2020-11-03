@@ -82,7 +82,7 @@ namespace Encryptions.Encryptors
             using var fileForReading = new FileStream(completeFilePath, FileMode.Open);
             using var reader = new BinaryReader(fileForReading);
             var buffer = new byte[2000];
-            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}";
+            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)+".zz"}";
             using var fileForWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
             using var writer = new BinaryWriter(fileForWriting);
             while (fileForReading.Position != fileForReading.Length)
@@ -155,7 +155,7 @@ namespace Encryptions.Encryptors
             using var fileForReading = new FileStream(completeFilePath, FileMode.Open);
             using var reader = new BinaryReader(fileForReading);
             var buffer = new byte[2000];
-            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}";
+            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath) +".txt"}";
             using var fileForWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
             using var writer = new BinaryWriter(fileForWriting);
 
@@ -195,7 +195,7 @@ namespace Encryptions.Encryptors
                 {
                     for (int i = 0; i < height - 1; i++)
                     {
-                        if (arrayY[i][0].Equals('*'))
+                        if (arrayY[i][0].Equals(Convert.ToByte('*')))
                         {
                             flag = false;
                         }
@@ -207,7 +207,7 @@ namespace Encryptions.Encryptors
                     }
                     for (int j = height - 1; j > 0; j--)
                     {
-                        if (arrayY[j][0].Equals('*'))
+                        if (arrayY[j][0].Equals(Convert.ToByte('*')))
                         {
                             flag = false;
                         }

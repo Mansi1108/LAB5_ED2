@@ -100,7 +100,7 @@ namespace Encryptions.Encryptors
             using var reader = new BinaryReader(fileForReading);
             var buffer = new byte[2000];
             LoadDictionary(key, true);
-            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}";
+            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)+".csr"}";
             using var fileForWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
             using var writer = new BinaryWriter(fileForWriting);
             while (fileForReading.Position != fileForReading.Length)
@@ -153,7 +153,7 @@ namespace Encryptions.Encryptors
             using var reader = new BinaryReader(fileForReading);
             var buffer = new byte[2000];
             LoadDictionary(key, false);
-            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)}";
+            var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)+".txt"}";
             using var fileforWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
             using var writer = new BinaryWriter(fileforWriting);
             while (fileForReading.Position != fileForReading.Length)

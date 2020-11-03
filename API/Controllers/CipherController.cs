@@ -48,6 +48,10 @@ namespace API.Controllers
                 {
                     return StatusCode(500, "La forma correcta de enviar una llave para el cifrado de ruta es MxN-V o MxN-E");
                 }
+                else if (method.ToLower() == "zizag")
+                {
+                    return StatusCode(500, "La forma correcta de enviar una llave para el cifrado de zizag es un número entero positivo.");
+                }           
                 else
                 {
                     return StatusCode(500);
