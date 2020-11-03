@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 
 namespace API.Models
@@ -84,9 +85,24 @@ namespace API.Models
             return true;
         }
 
-        public void SetKeyFromString(string method, string key)
+        public bool SetKeyFromString(string method, string key)
         {
-
+            switch (method.ToLower())
+            {
+                case "cesar":
+                    Word = key;
+                    return CheckKeyValidness(method.ToLower(), this);
+                case "zigzag":
+                    Levels = Convert.ToInt32(key);
+                    return CheckKeyValidness(method.ToLower(), this);
+                case "ruta":
+                    var keyvalues = key.Split('x');
+                    Rows = Convert.ToInt32(keyvalues[0]);
+                    Columns = Convert.ToInt32(keyvalues[1]);
+                    return CheckKeyValidness(method.ToLower(), this);
+                default:
+                    return false;
+            }
         }
     }
 }
