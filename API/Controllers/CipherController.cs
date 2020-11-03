@@ -79,7 +79,7 @@ namespace API.Controllers
             }
             catch 
             {
-                    return StatusCode(500, "La clave no se ha ingresado correctamente");
+                return StatusCode(500, "La clave no se ha ingresado correctamente");
             }
         }
     }
