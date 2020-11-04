@@ -75,62 +75,68 @@ namespace Encryptions.Encryptors
             var fillingByte = Convert.ToByte(Fillingchar);
             List<byte>[] arrayY = new List<byte>[height];
             int k = 0;
-            List<byte> list;
-
             using var fileForReading = new FileStream(completeFilePath, FileMode.Open);
             using var reader = new BinaryReader(fileForReading);
             var buffer = new byte[2000];
             var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath)+".zz"}";
             using var fileForWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
             using var writer = new BinaryWriter(fileForWriting);
+            for (int i = 0; i < height; i++)
+            {
+                arrayY[i] = new List<byte>();
+            }
             while (fileForReading.Position != fileForReading.Length)
             {
+                k = 0;
                 buffer = reader.ReadBytes(buffer.Length);
-                list = new List<byte>(buffer);
-                for (int i = 0; i < height; i++)
-                {
-                    arrayY[i] = new List<byte>();
-                }
-                while (list.Count > 0)
+                while (k <  buffer.Length)
                 {
                     for (int i = 0; i < height - 1; i++)
                     {
-                        if (list.Count > 0)
+                        if (k < buffer.Length)
                         {
                             arrayY[i].Add(buffer[k]);
                             k++;
-                            list.RemoveAt(0);
-
+                        }
+                        else if (!(fileForReading.Position != fileForReading.Length))
+                        {
+                                arrayY[i].Add(fillingByte);
                         }
                         else
                         {
-                            arrayY[i].Add(fillingByte);
-
+                            k = 0;
+                            buffer = reader.ReadBytes(buffer.Length);
+                            arrayY[i].Add(buffer[k]);
+                            k++;
                         }
                     }
                     for (int j = height - 1; j > 0; j--)
                     {
-                        if (list.Count > 0)
+                        if (k < buffer.Length)
                         {
                             arrayY[j].Add(buffer[k]);
                             k++;
-                            list.RemoveAt(0);
                         }
-                        else
+                        else if (!(fileForReading.Position != fileForReading.Length))
                         {
                             arrayY[j].Add(fillingByte);
                         }
+                        else
+                        {
+                            k = 0;
+                            buffer = reader.ReadBytes(buffer.Length);
+                            arrayY[j].Add(buffer[k]);
+                            k++;
+                        }
                     }
-
                 }
-                for (int i = 0; i < height; i++)
+            }
+            for (int i = 0; i < height; i++)
+            {
+                foreach (var item in arrayY[i])
                 {
-                    foreach (var item in arrayY[i])
-                    {
-                        writer.Write(item);
-                    }
-                };
-                
+                    writer.Write(item);
+                }
             }
             reader.Close();
             fileForReading.Close();
@@ -148,44 +154,58 @@ namespace Encryptions.Encryptors
             var height = key.GetZigZagKey();
             List<byte>[] arrayY = new List<byte>[height];
             int n = 0;
-            List<byte> list;
-
             using var fileForReading = new FileStream(completeFilePath, FileMode.Open);
             using var reader = new BinaryReader(fileForReading);
             var buffer = new byte[2000];
             var fileRoute = $"{savingPath}/{Path.GetFileNameWithoutExtension(completeFilePath) +".txt"}";
             using var fileForWriting = new FileStream(fileRoute, FileMode.OpenOrCreate);
             using var writer = new BinaryWriter(fileForWriting);
-
+            for (int i = 0; i < height; i++)
+            {
+                arrayY[i] = new List<byte>();
+            }
             while (fileForReading.Position != fileForReading.Length)
             {
                 buffer = reader.ReadBytes(buffer.Length);
-                list = new List<byte>(buffer);
                 bool flag = true;
-
-                for (int i = 0; i < height; i++)
-                {
-                    arrayY[i] = new List<byte>();
-                }
-                int m = GetM(buffer.Length, height);
+                int m = GetM(Convert.ToInt32(fileForReading.Length), height);
                 for (int j = 0; j < height; j++)
                 {
                     if (j == 0 || j == height - 1)
                     {
                         for (int k = 0; k < m; k++)
                         {
-                            arrayY[j].Add(buffer[n]);
-                            n++;
-                            list.RemoveAt(0);
+                            if (n<buffer.Length)
+                            {
+                                arrayY[j].Add(buffer[n]);
+                                n++; 
+                            }
+                            else 
+                            {
+                                n = 0;
+                                buffer = reader.ReadBytes(buffer.Length);
+                                arrayY[j].Add(buffer[n]);
+                                n++;
+                            }
+
                         }
                     }
                     else
                     {
                         for (int k = 0; k < (2 * m); k++)
                         {
-                            arrayY[j].Add(buffer[n]);
-                            n++;
-                            list.RemoveAt(0);
+                            if (n < buffer.Length)
+                            {
+                                arrayY[j].Add(buffer[n]);
+                                n++;
+                            }
+                            else
+                            {
+                                n = 0;
+                                buffer = reader.ReadBytes(buffer.Length);
+                                arrayY[j].Add(buffer[n]);
+                                n++;
+                            }
                         }
                     }
                 }
@@ -193,26 +213,40 @@ namespace Encryptions.Encryptors
                 {
                     for (int i = 0; i < height - 1; i++)
                     {
-                        if (arrayY[i][0].Equals(Convert.ToByte('*')))
+                        if (arrayY[i].Count != 0)
                         {
-                            flag = false;
+                            if (arrayY[i][0].Equals(Convert.ToByte('*')))
+                            {
+                                flag = false;
+                            }
+                            else
+                            {
+                                writer.Write(arrayY[i][0]);
+                                arrayY[i].RemoveAt(0);
+                            }
                         }
                         else
                         {
-                            writer.Write(arrayY[i][0]);
-                            arrayY[i].RemoveAt(0);
+                            flag = false;
                         }
                     }
                     for (int j = height - 1; j > 0; j--)
                     {
-                        if (arrayY[j][0].Equals(Convert.ToByte('*')))
+                        if (arrayY[j].Count != 0)
                         {
-                            flag = false;
+                            if (arrayY[j][0].Equals(Convert.ToByte('*')))
+                            {
+                                flag = false;
+                            }
+                            else
+                            {
+                                writer.Write(arrayY[j][0]);
+                                arrayY[j].RemoveAt(0);
+                            }
                         }
                         else
                         {
-                            writer.Write(arrayY[j][0]);
-                            arrayY[j].RemoveAt(0);
+                            flag = false;
                         }
                     }
                 }
