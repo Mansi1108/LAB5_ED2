@@ -134,11 +134,11 @@ namespace Encryptions.Encryptors
             {
                 if (CesarDictionary.ContainsKey((byte)character))
                 {
-                    encryptedString += CesarDictionary[(byte)character];
+                    encryptedString += (char)CesarDictionary[(byte)character];
                 }
                 else
                 {
-                    encryptedString += character;
+                    encryptedString += (char)character;
                 }
             }
             return encryptedString;
@@ -178,19 +178,20 @@ namespace Encryptions.Encryptors
             return fileRoute;
         }
 
-        public string DecryptString(string text, T Key)
+        public string DecryptString(string text, T key)
         {
             CesarDictionary.Clear();
             var decryptedString = string.Empty;
+            LoadDictionary(key, false);
             foreach (var character in text)
             {
                 if (CesarDictionary.ContainsKey((byte)character))
                 {
-                    decryptedString += CesarDictionary[(byte)character];
+                    decryptedString += (char)CesarDictionary[(byte)character];
                 }
                 else
                 {
-                    decryptedString += character;
+                    decryptedString += (char)character;
                 }
             }
             return decryptedString;
