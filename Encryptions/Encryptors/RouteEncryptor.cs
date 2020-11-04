@@ -262,8 +262,18 @@ namespace Encryptions.Encryptors
                     {
                         for (int j = 0; j < X; j++)
                         {
-                            ActualMatrix[j, i] = buffer[k];
-                            k++;
+                            if (k<buffer.Length)
+                            {
+                                ActualMatrix[j, i] = buffer[k];
+                                k++;
+                            }
+                            else
+                            {
+                                k = 0;
+                                buffer = reader.ReadBytes(buffer.Length);
+                                ActualMatrix[j, i] = buffer[k];
+                                k++;
+                            }
                         }
                     }
                     FMatrixList.Add(ActualMatrix);
