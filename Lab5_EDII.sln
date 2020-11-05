@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomGenerics", "CustomGenerics\CustomGenerics.csproj", "{492EC0B7-9290-43B4-998A-195233E324FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{EFBF4FC6-4909-4ACF-A567-2C02693BF7C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{EFBF4FC6-4909-4ACF-A567-2C02693BF7C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StringEncryption", "StringEncryption\StringEncryption.csproj", "{D60A170C-AE6C-490F-99E0-2DD46BF4F456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringEncryption", "StringEncryption\StringEncryption.csproj", "{D60A170C-AE6C-490F-99E0-2DD46BF4F456}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encryptions", "Encryptions\Encryptions.csproj", "{04DB364E-5F7F-4184-B911-811EFDAAB2F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{492EC0B7-9290-43B4-998A-195233E324FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{492EC0B7-9290-43B4-998A-195233E324FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{492EC0B7-9290-43B4-998A-195233E324FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{492EC0B7-9290-43B4-998A-195233E324FA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EFBF4FC6-4909-4ACF-A567-2C02693BF7C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EFBF4FC6-4909-4ACF-A567-2C02693BF7C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFBF4FC6-4909-4ACF-A567-2C02693BF7C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{D60A170C-AE6C-490F-99E0-2DD46BF4F456}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D60A170C-AE6C-490F-99E0-2DD46BF4F456}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D60A170C-AE6C-490F-99E0-2DD46BF4F456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04DB364E-5F7F-4184-B911-811EFDAAB2F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04DB364E-5F7F-4184-B911-811EFDAAB2F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04DB364E-5F7F-4184-B911-811EFDAAB2F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04DB364E-5F7F-4184-B911-811EFDAAB2F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
